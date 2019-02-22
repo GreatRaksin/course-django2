@@ -7,14 +7,16 @@ from .models import Post, Category
 
 class PostList(View):
     """Список статей"""
-    def get(self, request):
-        posts = Post.objects.filter(category_id=1)
+    def get(self, request, slug=None):
+        if slug is not None:
+            posts = get_list_or_404(Post, category__slug=slug)
+        else:
+            posts = Post.objects.all()
+        return render(request, 'news/post-list.html', {"posts": posts})
 
-        print(posts)
-        # if posts.exists():
-        #     return HttpResponse(posts)
-        # else:
-        #     raise Http404
-        # for post in posts:
-        #     print(post)
-        return HttpResponse(posts)
+
+class PostDetail(View):
+    """Вывод полной статьи"""
+    def get(self, request, pk):
+        post = get_object_or_404(Post, id=pk)
+        return render(request, 'news/post-detail.html', {"post": post})

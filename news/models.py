@@ -43,9 +43,30 @@ class Post(models.Model):
     def __str__(self):
         return self.title
 
+    def get_comments(self):
+        return Comment.objects.filter(post_id=self.id)
+
     class Meta:
         verbose_name = "Статья"
         verbose_name_plural = "Статьи"
         ordering = ["-created"]
 
 
+class Comment(models.Model):
+    """Модель комментариев к статье"""
+    post = models.ForeignKey(
+        Post,
+        verbose_name="Статья",
+        on_delete=models.CASCADE
+    )
+    text = models.TextField("Комментарий")
+    moderation = models.BooleanField("Разрешено к публикации", default=False)
+    created = models.DateTimeField("Дата написания", auto_now_add=True)
+
+    def __str__(self):
+        return "{}".format(self.post.title)
+
+    class Meta:
+        verbose_name = "Комментарий"
+        verbose_name_plural = "Комментарии"
+        ordering = ["-created"]
