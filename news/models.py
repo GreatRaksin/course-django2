@@ -39,6 +39,8 @@ class Post(models.Model):
         null=True
     )
     tags = models.ManyToManyField(Tag, verbose_name="Теги")
+    # slug = models.SlugField("url", max_length=100)
+    viewed = models.PositiveIntegerField("Просмотров", default=0)
 
     def __str__(self):
         return self.title

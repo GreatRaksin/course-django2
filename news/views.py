@@ -2,7 +2,7 @@ from django.http import HttpResponse, Http404
 from django.shortcuts import render, get_object_or_404, get_list_or_404, redirect
 from django.views.generic.base import View
 
-from .models import Post, Category
+from .models import Post, Category, Comment
 from .forms import CommentForm
 
 
@@ -27,14 +27,18 @@ class PostDetail(View):
 class AddComment(View):
     """Добавление комментариев"""
     def post(self, request, pk):
-        # text = request.POST.get("text")
-        # print(text)
-        form = CommentForm(request.POST)
-        # text = form.changed_data["text"]
-        if form.is_valid():
-            form = form.save(commit=False)
-            form.post = Post.objects.get(id=pk)
-            form.save()
-            return redirect("news")
+        text = request.POST.get("text")
+        if text == '':
+            print("error")
         else:
-            return HttpResponse(status=400)
+            Comment.objects.create(text=text, post=Post.objects.get(id=pk))
+        # print(text)
+        # form = CommentForm(request.POST)
+        # # text = form.changed_data["text"]
+        # if form.is_valid():
+        #     form = form.save(commit=False)
+        #     form.post = Post.objects.get(id=pk)
+        #     form.save()
+        return redirect("news")
+        # else:
+        #     return HttpResponse(status=400)

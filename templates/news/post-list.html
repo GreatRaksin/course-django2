@@ -2,8 +2,10 @@
 {% load  category_tag %}
 {% block content %}
     {% for post in posts %}
-        <h1><a href="{% url 'post_detail' pk=post.id  %}">{{ post.title }}</a></h1>
-        <p>{{ post.text }}</p>
+{#        {% if  %}#}
+            <h1><a href="{% url 'post_detail' pk=post.id %}">{{ post.title }}</a></h1>
+            <p>{{ post.text }}</p>
+{#        {% endif %}#}
     {% endfor %}
     <hr>
     {% category_list %}
