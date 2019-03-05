@@ -54,6 +54,11 @@ class Post(models.Model):
         ordering = ["-created"]
 
 
+class PostProxy(Post):
+    class Meta:
+        proxy = True
+
+
 class Comment(models.Model):
     """Модель комментариев к статье"""
     post = models.ForeignKey(

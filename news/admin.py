@@ -1,6 +1,7 @@
+from django import forms
 from django.contrib import admin
 
-from .models import Post, Category, Tag, Comment
+from .models import Post, PostProxy, Category, Tag, Comment
 
 
 admin.site.site_title = "Course Django"
@@ -25,15 +26,24 @@ class CommentAdmin(admin.TabularInline):
     list_editable = ("moderation",)
 
 
+class PostProxyAdmin(admin.StackedInline):
+    """Прокси модель"""
+    model = Post
+    extra = 3
+
+
+@admin.register(Post)
 class PostAdmin(admin.ModelAdmin):
     """Статьи"""
-    list_display = ("id", "title", "created")
-    list_display_links = ("title",)
-    search_fields = ("title", )
-    list_filter = ("created", "category")
+    model = Post
+    # inlines = [PostProxyAdmin]
+    # list_display = ("id", "title", "created")
+    # list_display_links = ("title",)
+    # search_fields = ("title", )
+    # list_filter = ("created", "category")
     # list_per_page = 1
     # list_editable = ("title",)
-    inlines = [CommentAdmin]
+    # inlines = [CommentAdmin]
     # fieldsets = (
     #     (None, {
     #         "fields": (
@@ -50,8 +60,8 @@ class PostAdmin(admin.ModelAdmin):
     #     }),
     # )
     # filter_vertical = ("tags",)
-    filter_horizontal = ("tags",)
-    readonly_fields = ("viewed",)
+    # filter_horizontal = ("tags",)
+    # readonly_fields = ("viewed",)
     # prepopulated_fields = {}
 
     # fields = ("title",)
@@ -59,10 +69,10 @@ class PostAdmin(admin.ModelAdmin):
     # raw_id_fields = ("tags",)
     # actions_on_top = False
     # actions_on_bottom = True
-    show_full_result_count = False
+    # show_full_result_count = False
 
 
 # admin.site.register(Category, CategoryAdmin)
 admin.site.register(Tag)
-admin.site.register(Post, PostAdmin)
+# admin.site.register(Post, PostAdmin)
 admin.site.register(Comment)

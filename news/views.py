@@ -27,18 +27,11 @@ class PostDetail(View):
 class AddComment(View):
     """Добавление комментариев"""
     def post(self, request, pk):
-        text = request.POST.get("text")
-        if text == '':
-            print("error")
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            form = form.save(commit=False)
+            form.post = Post.objects.get(id=pk)
+            form.save()
+            return redirect("news")
         else:
-            Comment.objects.create(text=text, post=Post.objects.get(id=pk))
-        # print(text)
-        # form = CommentForm(request.POST)
-        # # text = form.changed_data["text"]
-        # if form.is_valid():
-        #     form = form.save(commit=False)
-        #     form.post = Post.objects.get(id=pk)
-        #     form.save()
-        return redirect("news")
-        # else:
-        #     return HttpResponse(status=400)
+            return HttpResponse(status=400)
