@@ -3,12 +3,12 @@
 {% block content %}
     {% for post in posts %}
         <h1><a href="{{ post.get_absolute_url }}">{{ post.title }}</a></h1>
-        <h5>{{ post.subtitle }}</h5>
+{#        <h5>{{ post.subtitle }}</h5>#}
         {% if post.image %}
             <img src="{{ post.image.url }}" style="width: 400px; height: 300px;">
         {% endif %}
         <p>{{ post.mini_text }}</p>
-        <small>{{ post.published_date }}</small>
+        <b>{{ post.published_date }}</b>
     {% endfor %}
     <hr>
     {#    {% category_list %}#}

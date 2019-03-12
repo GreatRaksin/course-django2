@@ -1,37 +1,68 @@
+from datetime import datetime
+
 from django.http import HttpResponse, Http404
 from django.shortcuts import render, get_object_or_404, get_list_or_404, redirect
+from django.views.generic import ListView, DetailView
 from django.views.generic.base import View
 
 from .models import Post, Category, Comment
 from .forms import CommentForm
 
 
-class PostList(View):
+class PostList(ListView):
     """Список статей"""
-    def get(self, request, slug=None):
-        if slug is not None:
-            posts = get_list_or_404(Post, category__slug=slug)
+    context_object_name = 'posts'
+
+    def get_queryset(self):
+        if self.kwargs.get('category') is not None:
+            post_list = Post.objects.filter(
+                category__slug=self.kwargs.get('category'),
+                published=True,
+                published_date__lte=datetime.now(),
+            )
+            if self.request.user.is_authenticated:
+                posts = post_list
+            else:
+                posts = post_list.filter(status=False)
+
+            if posts.exists():
+                self.paginate_by = posts.first().category.pagination
+                self.template_name = posts.first().category.template
         else:
             posts = Post.objects.all()
-        return render(request, 'news/post-list.html', {"posts": posts})
+            self.paginate_by = 5
+            self.template_name = 'news/post-list.html'
+        return posts
+        # else:
+        #     raise Http404
 
 
-class PostDetail(View):
+class PostDetail(DetailView):
     """Вывод полной статьи"""
-    def get(self, request, pk):
-        post = get_object_or_404(Post, id=pk)
-        form = CommentForm()
-        return render(request, 'news/post-detail.html', {"post": post, "form": form})
+    model = Post
+    template_name = 'news/post-detail.html'
 
+    # def get_queryset(self):
+    #     post = Post.objects.get(
+    #             slug=self.kwargs.get('slug'),
+    #             published=True,
+    #             published_date__lte=datetime.now(),
+    #         )
+    #     return post
 
-class AddComment(View):
-    """Добавление комментариев"""
-    def post(self, request, pk):
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['form'] = CommentForm()
+        return context
+
+    def post(self, request, slug):
         form = CommentForm(request.POST)
         if form.is_valid():
             form = form.save(commit=False)
-            form.post = Post.objects.get(id=pk)
+            form.post = Post.objects.get(slug=slug)
             form.save()
             return redirect("news")
         else:
             return HttpResponse(status=400)
+
+

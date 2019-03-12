@@ -9,7 +9,7 @@
         {{ comment.text }}
     {% endfor %}
 
-    <form action="{% url 'add_comment' pk=post.id %}" method="post">
+    <form action="{{ post.get_absolute_url }}" method="post">
         {% csrf_token %}
 {#        {{ form }}#}
         <input name="text" value="" style="border: 1px solid #000; padding: 15px">
@@ -17,10 +17,4 @@
     </form>
 
     <hr>
-    <ul>
-    <li>AAAAAAAAAAA</li>
-    <li>BBBBBBBBBB
-        {% category_list %}
-    </li>
-    </ul>
 {% endblock content %}

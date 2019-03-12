@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib import admin
 
-from .models import Post, PostProxy, Category, Tag, Comment
+from .models import Post, Category, Tag, Comment
 
 
 admin.site.site_title = "Course Django"
@@ -36,6 +36,7 @@ class PostProxyAdmin(admin.StackedInline):
 class PostAdmin(admin.ModelAdmin):
     """Статьи"""
     model = Post
+    prepopulated_fields = {'slug': ('title',)}
     # inlines = [PostProxyAdmin]
     # list_display = ("id", "title", "created")
     # list_display_links = ("title",)
