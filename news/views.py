@@ -66,3 +66,4 @@ class PostDetail(DetailView):
             return HttpResponse(status=400)
 
 
+

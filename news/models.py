@@ -3,8 +3,10 @@ from django.db import models
 from django.urls import reverse
 from django.utils import timezone
 
+from mptt.models import MPTTModel, TreeForeignKey
 
-class Category(models.Model):
+
+class Category(MPTTModel):
     """Модель категорий статей"""
     name = models.CharField("Имя", max_length=100)
     slug = models.SlugField("url", max_length=100)
@@ -15,6 +17,20 @@ class Category(models.Model):
         blank=False,
         default='news/post-list.html'
     )
+    parent = TreeForeignKey(
+        'self',
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        related_name='children'
+    )
+    # parent = models.ForeignKey(
+    #     'self',
+    #     verbose_name="Категория",
+    #     on_delete=models.SET_NULL,
+    #     null=True,
+    #     blank=True
+    # )
 
     def __str__(self):
         return self.name

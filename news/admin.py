@@ -1,5 +1,6 @@
 from django import forms
 from django.contrib import admin
+from mptt.admin import MPTTModelAdmin
 
 from .models import Post, Category, Tag, Comment
 
@@ -9,9 +10,10 @@ admin.site.site_header = "Course Django"
 
 
 @admin.register(Category)
-class CategoryAdmin(admin.ModelAdmin):
+class CategoryAdmin(MPTTModelAdmin):
     """Категории"""
     prepopulated_fields = {'slug': ('name',)}
+    mptt_level_indent = 20
 
 
 class CommentAdmin(admin.TabularInline):
