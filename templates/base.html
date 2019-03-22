@@ -1,13 +1,27 @@
 <!DOCTYPE html>
+{% load staticfiles %}
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
     <title>Title</title>
+
+    <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'css/blog-home.css" rel="stylesheet' %}">
 </head>
 <body>
-{#    {% include 'include/menu.html' %}#}
-    {% block content %}
+{% include 'include/menu.html' %}
+<div class="container">
+    <div class="row">
+        {% block content %}
 
-    {% endblock content %}
+        {% endblock content %}
+    </div>
+</div>
+
+<script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+<script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
 </body>
 </html>

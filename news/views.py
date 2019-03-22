@@ -1,5 +1,6 @@
 from datetime import datetime
 
+from django.db.models import Q
 from django.http import HttpResponse, Http404
 from django.shortcuts import render, get_object_or_404, get_list_or_404, redirect
 from django.views.generic import ListView, DetailView
@@ -64,6 +65,21 @@ class PostDetail(DetailView):
             return redirect("news")
         else:
             return HttpResponse(status=400)
+
+
+class Search(View):
+    """Поиск по статья и ктегориям"""
+    def get(self, request):
+        search = request.GET.get("search", None)
+        context = Post.objects.filter(Q(title__icontains=search) |
+                                      Q(category__name__icontains=search))
+        # if not context.exists():
+        #     context = Post.objects.filter(category__name__icontains=search)
+        return render(request, 'news/post-list.html', {"posts": context})
+
+
+
+
 
 
 

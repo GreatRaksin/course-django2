@@ -1,31 +1,37 @@
-{% extends 'base.html' %}
+{% extends 'news/base.html' %}
 {% load mptt_tags %}
-{#{% load  category_tag %}#}
-{% block content %}
-    {% if categories %}
-        <ul class="root">
-            {% recursetree categories %}
-                <li>
-                    {{ node.name }}
-                    {% if not node.is_leaf_node %}
-                        <ul class="children">
-                            {{ children }}
-                        </ul>
-                    {% endif %}
-                </li>
-            {% endrecursetree %}
-        </ul>
-    {% endif %}
-    <hr>
+{% block post %}
+    <h1 class="my-4">Page Heading
+        <small>Secondary Text</small>
+    </h1>
+
     {% for post in posts %}
-        <h1><a href="{{ post.get_absolute_url }}">{{ post.title }}</a></h1>
-        <h5>{{ post.subtitle }}</h5>
-        {% if post.image %}
-            <img src="{{ post.image.url }}" style="width: 400px; height: 300px;">
-        {% endif %}
-        <p>{{ post.mini_text }}</p>
-        <small>{{ post.published_date }}</small>
+        <!-- Blog Post -->
+        <div class="card mb-4">
+            {% if post.image %}
+                <img class="card-img-top" src="{{ post.image.url }}">
+            {% endif %}
+            <div class="card-body">
+                <h2 class="card-title">{{ post.title }}</h2>
+                <small class="card-title">{{ post.subtitle }}</small>
+                <p class="card-text">
+                    {{ post.mini_text }}
+                </p>
+                <a href="{{ post.get_absolute_url }}" class="btn btn-primary">Read More &rarr;</a>
+            </div>
+            <div class="card-footer text-muted">
+                <small>{{ post.published_date }}</small>
+                <a href="#">Start Bootstrap</a>
+            </div>
+        </div>
     {% endfor %}
-    <hr>
-    {#    {% category_list %}#}
-{% endblock content %}
+    <!-- Pagination -->
+    <ul class="pagination justify-content-center mb-4">
+        <li class="page-item">
+            <a class="page-link" href="#">&larr; Older</a>
+        </li>
+        <li class="page-item disabled">
+            <a class="page-link" href="#">Newer &rarr;</a>
+        </li>
+    </ul>
+{% endblock post %}
