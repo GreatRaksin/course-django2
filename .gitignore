@@ -1,7 +1,7 @@
 .idea
 
 venv
-
+venv2
 
 local_settings.py
 __pycache__/
