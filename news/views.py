@@ -1,8 +1,9 @@
 from datetime import datetime
 
 from django.db.models import Q
-from django.http import HttpResponse, Http404
+from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, get_list_or_404, redirect
+from django.urls import reverse, reverse_lazy
 from django.views.generic import ListView, DetailView
 from django.views.generic.base import View
 
@@ -31,7 +32,7 @@ class PostList(ListView):
                 self.template_name = posts.first().category.template
         else:
             posts = Post.objects.all()
-            self.paginate_by = 5
+            self.paginate_by = 2
             self.template_name = 'news/post-list.html'
         return posts
         # else:
@@ -56,13 +57,13 @@ class PostDetail(DetailView):
         context['form'] = CommentForm()
         return context
 
-    def post(self, request, slug):
+    def post(self, request, category, slug):
         form = CommentForm(request.POST)
         if form.is_valid():
             form = form.save(commit=False)
             form.post = Post.objects.get(slug=slug)
             form.save()
-            return redirect("news")
+            return HttpResponseRedirect(reverse('post_detail', kwargs={"category": category, "slug": slug}))
         else:
             return HttpResponse(status=400)
 
