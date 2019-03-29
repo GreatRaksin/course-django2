@@ -50,6 +50,7 @@ INSTALLED_APPS = [
 
     'news',
     'pages',
+    'contact',
 ]
 
 MIDDLEWARE = [
@@ -240,3 +241,7 @@ BOOTSTRAP4 = {
         'inline': 'bootstrap4.renderers.InlineFieldRenderer',
     },
 }
+
+
+MY_INFO = 80
+MESSAGE_LEVEL = MY_INFO
