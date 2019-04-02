@@ -47,10 +47,13 @@ INSTALLED_APPS = [
     'bootstrap4',
 
     'mptt',
+    'photologue',
+    'sortedm2m',
 
     'news',
     'pages',
     'contact',
+    'menu',
 ]
 
 MIDDLEWARE = [
@@ -144,8 +147,6 @@ STATICFILES_DIRS = [STATIC_DIR, ]
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-
-EMAIL_BACKEND = 'django.core.mail.backends.dummy.EmailBackend'
 
 # Allauth
 ACCOUNT_EMAIL_REQUIRED = True
@@ -245,3 +246,14 @@ BOOTSTRAP4 = {
 
 MY_INFO = 80
 MESSAGE_LEVEL = MY_INFO
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
+DEFAULT_FROM_EMAIL = 'email'
+EMAIL_HOST = 'smtp'
+EMAIL_HOST_USER = 'email'
+EMAIL_HOST_PASSWORD = 'pass'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_USE_SSL = False

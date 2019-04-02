@@ -35,6 +35,9 @@ class Category(MPTTModel):
     def __str__(self):
         return self.name
 
+    def get_absolute_url(self):
+        return reverse('category_post', kwargs={"category": self.slug})
+
     class Meta:
         verbose_name = "Категория статей"
         verbose_name_plural = "Категории статей"
@@ -67,6 +70,13 @@ class Post(models.Model):
     mini_text = models.TextField("Краткое содержание", max_length=1000, default='')
     text = models.TextField("Текст")
     image = models.ImageField('Главное изображение', upload_to='post/', blank=True)
+    gallery = models.ForeignKey(
+        'photologue.Gallery',
+        verbose_name="Галерея",
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True
+    )
     created = models.DateTimeField("Дата создания", auto_now_add=True)
     edit_date = models.DateTimeField(
         "Дата редактирования",

@@ -12,6 +12,7 @@ admin.site.site_header = "Course Django"
 @admin.register(Category)
 class CategoryAdmin(MPTTModelAdmin):
     """Категории"""
+    list_display = ("name", "id")
     prepopulated_fields = {'slug': ('name',)}
     mptt_level_indent = 20
 
@@ -37,6 +38,7 @@ class PostProxyAdmin(admin.StackedInline):
 @admin.register(Post)
 class PostAdmin(admin.ModelAdmin):
     """Статьи"""
+    list_display = ("title", "id")
     model = Post
     prepopulated_fields = {'slug': ('title',)}
     # inlines = [PostProxyAdmin]

@@ -23,6 +23,7 @@ from Course_django2 import settings
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('allauth.urls')),
+    path('photologue/', include('photologue.urls', namespace='photologue')),
 
     path("news/", include("news.urls")),
     path("contact/", include("contact.urls")),

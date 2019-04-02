@@ -12,6 +12,11 @@
             <p class="card-text">
                 {{ post.text }}
             </p>
+            <p>
+                {% for photo in post.gallery.photos.all %}
+                    <img src="{{ photo.image.url }}">
+                {% endfor %}
+            </p>
         </div>
         <div class="card-footer text-muted">
             <a href="#">Start Bootstrap</a>
