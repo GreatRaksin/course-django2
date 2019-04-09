@@ -79,6 +79,21 @@ class Search(View):
         return render(request, 'news/post-list.html', {"posts": context})
 
 
+class CategoryPost(ListView):
+    """"""
+    template_name = "shop/list-product.html"
+    paginate_by = 5
+
+    def get_queryset(self):
+        slug = self.kwargs.get("slug")
+        node = Category.objects.get(slug=slug)
+        if Post.objects.filter(category__slug=slug).exists():
+            posts = Post.objects.filter(category__slug=slug)
+        else:
+            posts = Post.objects.filter(category__slug__in=[x.slug for x in node.get_family()])
+        return posts
+
+
 
 
 
